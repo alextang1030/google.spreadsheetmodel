@@ -6,24 +6,24 @@
 <body>
   <div id="data"></div>
   <script>
-    var api_key = "AIzaSyBdJsthRvTU2R6NqTp-Ty9v53Smza3IduE";
-    var client_id = "1Ku7cpURgdX0h8da0mSzndkNSXXsue23gFbU-LwH2NrU";
-    var model = new SpreadsheetsModel(api_key,client_id)
-      .setHeader(2)
-      .setRanges("A1:R")
-      .setColumns({
+    var model = new SpreadsheetsModel({
+      "api_key":"AIzaSyBdJsthRvTU2R6NqTp-Ty9v53Smza3IduE",
+      "client_id":"1Ku7cpURgdX0h8da0mSzndkNSXXsue23gFbU-LwH2NrU",
+      "header":2,
+      "ranges": "A1:R",
+      "columns":{
         "school":"A",
         "year":"B",
         "school_type":"C"
-      });
-
-    // model.select(["school","year"])
-    //   .send(function(response){
-    //     console.log(response);
-    //   });
-    model.query("SELECT *",function(response){
-      console.log(response);
+      }
     });
+    model.select(["school","year"])
+      .send(function(response){
+        console.log(response);
+      });
+    // model.query("SELECT *",function(response){
+    //   console.log(response);
+    // });
   </script>
 </body>
 </html>

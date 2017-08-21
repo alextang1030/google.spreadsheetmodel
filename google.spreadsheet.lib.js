@@ -1,10 +1,21 @@
 
 (function(){
-  this.SpreadsheetsModel = function(api_key,client_id){
-    this.api_key = api_key;
-    this.client_id = client_id;
-    this.header = 0;   this.gid = 0;   this.ranges = "";
-    this.columns = {}; this.ids = {};
+  var setting = {
+    "api_key": "",
+    "client_id" : "",
+    "header":0,
+    "gid":0,
+    "ranges":"",
+    "columns":{}
+  };
+  var ids = {};
+  this.SpreadsheetsModel = function(options){
+    setting = Object.assign(setting,options);
+
+    for(var key in setting.columns)
+    {
+      ids[setting.columns[key]] = key;
+    }
     this.query_str = "";    this.selection = ""; this.wherecase = "";
     this.group_by = ""; this.order_by = ""; this.limit_num = 0;
     this.offset = 0; this.hasParentheses = false;
@@ -20,65 +31,42 @@
   }
 
   SpreadsheetsModel.prototype.setRanges = function(ranges) { // Table ranges. eg: A:AA
-    this.ranges = ranges;
+    setting.ranges = ranges;
     return this;
   }
   SpreadsheetsModel.prototype.setHeader = function(header) { // Rows number
-    this.header = header;
+    setting.header = header;
     return this;
   }
   SpreadsheetsModel.prototype.setSheet = function(gid) { // Sheet id
-    this.gid = gid;
+    setting.gid = gid;
     return this;
   }
 
   SpreadsheetsModel.prototype.setColumn = function(name,col) {
-
-    this.columns[name] = col;
-    this.ids[col] = name;
+    setting.columns[name] = col;
+    ids[col] = name;
     return this;
   }
 
   SpreadsheetsModel.prototype.setColumns = function(columns) {
-    var url = this.dataUrl();
     for(var key in columns) {
-      this.columns[key] = columns[key];
-      this.ids[columns[key]] = key;
-      google.load('visualization', '1', {
-        callback: function () {
-            var query = new google.visualization.Query(url);
-            query.setQuery("label "+ columns[key] +"'"+key+"'");
-            query.send(function(response){});
-          }
-        });
-
+      setting.columns[key] = columns[key];
+      ids[columns[key]] = key;
     }
-
     return this;
   }
   SpreadsheetsModel.prototype.getColumn = function(key) {
     try {
-      if (typeof this.columns[key] !== undefined)
+      if (typeof setting.columns[key] !== undefined)
       {
-        return this.columns[key];
+        return setting.columns[key];
       }
     } catch(e) {
-      console.log("Error: Get Column error:");
+      console.log("Error: Get Column error["+key+"]:");
       console.log(e.message);
     }
     return key;
-  }
-
-  SpreadsheetsModel.prototype.dataUrl = function() {
-    var url = "https://docs.google.com/spreadsheets/d/";
-    url += this.client_id;
-    url += "/gviz/tq?key"+this.api_key;
-    url += "&tqx=out:html&tq?gid="+this.gid;
-    url += "&headers="+this.header;
-    if (this.ranges != "")
-      url += "&ranges="+this.ranges;
-
-    return url;
   }
 
   SpreadsheetsModel.prototype.select = function(fields) {
@@ -100,7 +88,6 @@
         this.selection += this.getColumn(fields[key]);
       }
     }
-    console.log(this.selection);
     return this;
   }
 
@@ -184,7 +171,7 @@
     this.group_by = ""; this.order_by = ""; this.limit_num = 0;
     this.offset = 0;
 
-    request(this.dataUrl(),this.ids,sql,callback);
+    request(sql,callback);
   }
 
   SpreadsheetsModel.prototype.clear = function(){
@@ -193,13 +180,22 @@
     this.offset = 0;
   }
 
+  function dataUrl() {
+    var url = "https://docs.google.com/spreadsheets/d/";
+    url += setting.client_id;
+    url += "/gviz/tq?key"+setting.api_key;
+    url += "&tqx=out:html&tq?gid="+setting.gid;
+    url += "&headers="+setting.header;
+    if (setting.ranges != "")
+      url += "&ranges="+setting.ranges;
 
+    return url;
+  }
 
-  function request(url,columns,query_str,callback) {
-    // console.log(query_str);
+  function request(query_str,callback) {
     google.load('visualization', '1', {
         callback: function () {
-            var query = new google.visualization.Query(url);
+            var query = new google.visualization.Query(dataUrl());
             query.setQuery(query_str);
             query.send(function(response){
               var data = {
@@ -220,7 +216,7 @@
                 var temp = {};
 
                 row.c.forEach(function(v,i){
-                  var key = (columns[header[i].id]) ? columns[header[i].id] : header[i].id;
+                  var key = (ids[header[i].id]) ? ids[header[i].id] : header[i].id;
                   temp[key] = (row.c[i]) ? row.c[i].v: "";
                 });
                 data.response_data.push(temp);
