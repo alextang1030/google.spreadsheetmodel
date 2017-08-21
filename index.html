@@ -1,29 +1,65 @@
 <html>
 <head>
   <script type="text/javascript" src="https://www.google.com/jsapi" ></script>
+  <script type="text/javascript" src="jquery-3.2.1.min.js" ></script>
   <script type="text/javascript" src="google.spreadsheet.lib.js" ></script>
 </head>
 <body>
-  <div id="data"></div>
   <script>
     var model = new SpreadsheetsModel({
       "api_key":"AIzaSyBdJsthRvTU2R6NqTp-Ty9v53Smza3IduE",
-      "client_id":"1Ku7cpURgdX0h8da0mSzndkNSXXsue23gFbU-LwH2NrU",
+      "client_id":"1e5ktLKMUQN27OFkFGZHPNIiRib664B8VQQT5-7GoYtg",
       "header":2,
       "ranges": "A1:R",
       "columns":{
         "school":"A",
-        "year":"B",
-        "school_type":"C"
+        "school_type":"B"
       }
     });
-    model.select(["school","year"])
-      .send(function(response){
-        console.log(response);
-      });
-    // model.query("SELECT *",function(response){
-    //   console.log(response);
-    // });
+    function Search()
+    {
+      model.like("school",document.getElementById('search-school').value)
+        .send(function(response){
+          $("#demo-search-result").empty();
+          $.each(response.response_data,function(k,v){
+            $("#demo-search-result").append(
+              $("<ul class=\"school\" />")
+                .append($("<li class=\"name\">").append(v.school))
+                .append($("<li class=\"type\">").append(v.school_type))
+            );
+          });
+        });
+    }
   </script>
+  <header>
+    <div class="container">
+      <div class="col-left">
+        <a href="#">Logo</a>
+      </div>
+      <div class="col-right">
+
+      </div>
+    </div>
+  </header>
+  <section id="demo-wrapper">
+    <div class="demo-container">
+      <div class="demo-search-box">
+        <form id="demo-search" onsubmit="Search();return false;">
+          <div class="form-group">
+            <label>學校名稱</label>
+            <input type="input" name="school" id="search-school">
+          </div>
+          <div class="form-group">
+            <input type="submit" value="Search">
+          </div>
+        </form>
+      </div>
+      <div class="demo-search-context">
+        <div id="demo-search-result">
+
+        </div>
+      </div>
+    </div>
+  </section>
 </body>
 </html>
