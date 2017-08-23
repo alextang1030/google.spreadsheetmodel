@@ -211,13 +211,14 @@
                 return;
               }
               var header = response.getDataTable().Mf;
-              data.response_header = header;
+              // data.response_header = header;
               response.getDataTable().Nf.forEach(function(row){
                 var temp = {};
 
                 row.c.forEach(function(v,i){
                   var key = (ids[header[i].id]) ? ids[header[i].id] : header[i].id;
                   temp[key] = (row.c[i]) ? row.c[i].v: "";
+                  data.response_header[key] = header[i].label;
                 });
                 data.response_data.push(temp);
               });

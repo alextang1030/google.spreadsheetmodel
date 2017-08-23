@@ -9,11 +9,16 @@
     var model = new SpreadsheetsModel({
       "api_key":"AIzaSyBdJsthRvTU2R6NqTp-Ty9v53Smza3IduE",
       "client_id":"1e5ktLKMUQN27OFkFGZHPNIiRib664B8VQQT5-7GoYtg",
-      "header":2,
+      "header":1,
       "ranges": "A1:R",
       "columns":{
-        "school":"A",
-        "school_type":"B"
+        "school":"A",  "school_type":"B",  "student_nationality":"D",
+        "organization":"E",  "area":"F",  "school_zone":"G",
+        "school_net":"H",  "tel":"I",  "email":"J",
+        "china_sis":"K",  "chinese_teacher":"K",
+        "class_type":"N",
+        "status_14":"O", "status_15":"P","status_16":"Q","status_17":"R",
+        "purpose_14":"S","purpose_15":"T","purpose_16":"U","purpose_17":"V"
       }
     });
     function Search()
@@ -21,11 +26,32 @@
       model.like("school",document.getElementById('search-school').value)
         .send(function(response){
           $("#demo-search-result").empty();
+          console.log(response);
+          var header = response.response_header;
           $.each(response.response_data,function(k,v){
             $("#demo-search-result").append(
               $("<ul class=\"school\" />")
-                .append($("<li class=\"name\">").append(v.school))
-                .append($("<li class=\"type\">").append(v.school_type))
+                .append(
+                  $("<li class=\"name\">").append($("<label>"+header.school+"</label>")).append(v.school))
+                .append($("<li class=\"type\">").append($("<label>"+header.school_type+"</label>")).append(v.school_type))
+                .append($("<li class=\"type\">").append($("<label>"+header.student_nationality+"</label>")).append(v.student_nationality))
+                .append($("<li class=\"type\">").append($("<label>"+header.student_nationality+"</label>")).append(v.student_nationality))
+                .append($("<li class=\"type\">").append($("<label>"+header.organization+"</label>")).append(v.organization))
+                .append($("<li class=\"type\">").append($("<label>"+header.area+"</label>")).append(v.area))
+                .append($("<li class=\"type\">").append($("<label>"+header.school_zone+"</label>")).append(v.school_zone))
+                .append($("<li class=\"type\">").append($("<label>"+header.school_net+"</label>")).append(v.school_net))
+                .append($("<li class=\"type\">").append($("<label>"+header.class_type+"</label>")).append(v.class_type))
+                .append($("<li class=\"type\">").append($("<label>"+header.tel+"</label>")).append(v.tel))
+                .append($("<li class=\"type\">").append($("<label>"+header.email+"</label>")).append(v.email))
+                .append($("<li class=\"type\">").append($("<label>"+header.china_sis+"</label>")).append(v.china_sis))
+                .append(
+                  $("<li class=\"type\">").append(
+                    $('<table>')
+                      .append($('<tr><th>統計年份</th><th>2014</th><th>2015</th><th>2016</th><th>2017</th></tr>'))
+                      .append($('<tr><td>普教中現況</td><td>'+v.status_14+'</td><td>'+v.status_15+'</td><td>'+v.status_16+'</td><td>'+v.status_17+'</td></tr>'))
+                      .append($('<tr><td>實施情況</td><td>'+v.purpose_14+'</td><td>'+v.purpose_15+'</td><td>'+v.purpose_16+'</td><td>'+v.purpose_17+'</td></tr>'))
+                  )
+                )
             );
           });
         });
