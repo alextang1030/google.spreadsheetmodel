@@ -21,7 +21,7 @@ header
   width: 100%
   .demo-header
     width: 100%
-    max-width: 786px
+    max-width: 1024px
     margin: 40px auto
     .logo
       color: red
@@ -35,7 +35,7 @@ header
         height: 60px
   .demo-container
     width: 100%
-    max-width: 786px
+    max-width: 1024px
     margin: 40px auto
     border-radius: 10px
     border: 2px solid #ddd
@@ -69,6 +69,7 @@ header
                 content: ":"
             table
               width: 100%
+              margin-top: 10px
               border: 1px solid #000
               tr
                 th,
@@ -84,3 +85,6 @@ header
                 td
                   text-align: center
                   vertical-align: middle
+                &:last-child
+                  td:not(:first-child)
+                    font-size: 12px

@@ -25,7 +25,7 @@ header {
 
 #demo-wrapper .demo-header {
   width: 100%;
-  max-width: 786px;
+  max-width: 1024px;
   margin: 40px auto;
 }
 
@@ -45,7 +45,7 @@ header {
 
 #demo-wrapper .demo-container {
   width: 100%;
-  max-width: 786px;
+  max-width: 1024px;
   margin: 40px auto;
   border-radius: 10px;
   border: 2px solid #ddd;
@@ -96,6 +96,7 @@ header {
 
 #demo-wrapper .demo-container .demo-search-context #demo-search-result .school li table {
   width: 100%;
+  margin-top: 10px;
   border: 1px solid #000;
 }
 
@@ -121,4 +122,8 @@ header {
 #demo-wrapper .demo-container .demo-search-context #demo-search-result .school li table tr td {
   text-align: center;
   vertical-align: middle;
+}
+
+#demo-wrapper .demo-container .demo-search-context #demo-search-result .school li table tr:last-child td:not(:first-child) {
+  font-size: 12px;
 }
