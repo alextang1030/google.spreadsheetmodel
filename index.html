@@ -1,8 +1,11 @@
 <html>
 <head>
+  <meta name="viewport" content="width=device-width, user-scalable=0"/>
+  <title>港語學 - 全港普教中學校數據搜尋系統</title>
   <script type="text/javascript" src="https://www.google.com/jsapi" ></script>
-  <script type="text/javascript" src="jquery-3.2.1.min.js" ></script>
-  <script type="text/javascript" src="google.spreadsheet.lib.js" ></script>
+  <script type="text/javascript" src="js/jquery-3.2.1.min.js" ></script>
+  <script type="text/javascript" src="js/google.spreadsheet.lib.js" ></script>
+  <link rel="stylesheet" href="css/style.min.css" type="text/css" />
 </head>
 <body>
   <script>
@@ -15,7 +18,7 @@
         "school":"A",  "school_type":"B",  "student_nationality":"D",
         "organization":"E",  "area":"F",  "school_zone":"G",
         "school_net":"H",  "tel":"I",  "email":"J",
-        "china_sis":"K",  "chinese_teacher":"K",
+        "china_sis":"K",  "chinese_teacher":"L",
         "class_type":"N",
         "status_14":"O", "status_15":"P","status_16":"Q","status_17":"R",
         "purpose_14":"S","purpose_15":"T","purpose_16":"U","purpose_17":"V"
@@ -60,7 +63,7 @@
   <header>
     <div class="container">
       <div class="col-left">
-        <a href="#">Logo</a>
+        <a href="https://www.facebook.com/hongkonglangstudies/"><img src="https://scontent.fhkg1-1.fna.fbcdn.net/v/t31.0-8/19092635_1460534694003251_4321425369559729240_o.png?oh=e8986f171cc6837728261647301f7c2c&oe=5A35D300" width="60px"></a>
       </div>
       <div class="col-right">
 
@@ -72,10 +75,10 @@
       <div class="demo-search-box">
         <form id="demo-search" onsubmit="Search();return false;">
           <div class="form-group">
-            <label>學校名稱</label>
-            <input type="input" name="school" id="search-school">
+            <label>學校名稱 : </label>
+            <input type="input" name="school" value="" id="search-school">
           </div>
-          <div class="form-group">
+          <div class="form-group" style="text-align:right">
             <input type="submit" value="Search">
           </div>
         </form>
